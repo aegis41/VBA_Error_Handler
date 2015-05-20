@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700,600' rel='stylesheet' type='text/css'>
+	<link href='tools.css' rel='stylesheet' type='text/css'>
+	<title>VBA Error Handler Generator</title>
+
+<body>
+
+<h1>VBA Error Handler</h1>
+
+<p>Please enter the name of the routine.</p>
+
+<p><input id="name" type="text" size="80"></p>
+<p><input id="pubpriv1" type="radio" value="Private" name="pubpriv" checked="checked">Private /
+<input id="pubpriv2" type="radio" value="Public" name="pubpriv"> Public </p>
+
+<p><input id="funcsub1" type="radio" value="Function" name="funcsub" checked="checked">Function /
+<input id="funcsub2" type="radio" value="Sub" name="funcsub"> Sub </p>
+
+<p><button type="button" onclick="myFunction()">Submit</button></p>
+
+<textarea id="demo" rows="15" cols="80" onclick="this.focus();this.select()"></textarea>
+
+<p><a href="index.html">Back to list</a></p>
+
+<p class="copyright">&copy; 2015, Code by Anthony A. Gaff, Style by Josh Wenning</p>
+
+<script>
+function myFunction() {
+    var procName, text;
+	var procScope, text;
+	var radioscope = document.getElementsByName('pubpriv');
+	var radios = document.getElementsByName('funcsub');
+	var procType, text;
+	var outputText, text;
+
+    // Get the value of the input field with id="name"
+    procName = document.getElementById("name").value;
+	
+	// Get the value of the radioscope element
+	for (var i = 0, length = radioscope.length; i < length; i++){
+		if (radioscope[i].checked){
+			procScope = radioscope[i].value;
+			break;
+		}
+	}
+	
+	// Get the value of the radios element
+	for (var i = 0, length = radios.length; i < length; i++){
+		if (radios[i].checked) {
+			procType = radios[i].value;
+			break;
+		}
+	}
+	
+	
+	//procType = document.getElementById("funcsub1").value
+	outputText = procScope + " " + procType + " " + procName + "()\r\n";
+    outputText = outputText + "On Error GoTo Err_" + procName + "\r\n";
+	outputText = outputText + "\t\'your code goes here\r\n";
+	outputText = outputText + "\r\n";
+	outputText = outputText + "Exit_" + procName + ":\r\n";
+	outputText = outputText + "\tExit " + procType + "\r\n";
+	outputText = outputText + "Err_" + procName + ":\r\n";
+	outputText = outputText + "\tMsgBox \"" + procName + ": \" & Err.Number & \" \" & Err.Description" + "\r\n";
+	outputText = outputText + "\tResume Exit_" + procName + "\r\n";
+	outputText = outputText + "End " + procType;
+
+    document.getElementById("demo").innerHTML = outputText;
+}
+</script>
+
+</body>
+</html> 
